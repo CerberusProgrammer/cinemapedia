@@ -1,4 +1,3 @@
-import 'package:cinemapedia/config/constants/enviroment.dart';
 import 'package:cinemapedia/screens/widget/sidebar.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +11,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       drawer: const SideBar(),
-      body: Center(
-        child: Text(Enviroment.movieDBKey),
-      ),
+      body: Placeholder(),
     );
   }
 }
