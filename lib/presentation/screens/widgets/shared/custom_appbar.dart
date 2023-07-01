@@ -6,11 +6,11 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final titleStyle = Theme.of(context).textTheme.titleMedium;
+    final titleStyle = Theme.of(context).textTheme.titleLarge;
 
     return SafeArea(
       child: Container(
-        color: Colors.amber,
+        color: Colors.amber.withAlpha(1),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
@@ -20,7 +20,7 @@ class CustomAppBar extends StatelessWidget {
             height: 60,
             child: Row(children: [
               Icon(Icons.movie, color: colors.primary),
-              const SizedBox(width: 5),
+              const SizedBox(width: 15),
               Text('Cinemapedia', style: titleStyle),
               const Spacer(),
               IconButton(onPressed: () {}, icon: const Icon(Icons.search)),

@@ -1,5 +1,7 @@
 import 'package:cinemapedia/presentation/providers/providers.dart';
+import 'package:cinemapedia/presentation/screens/widgets/movies/movies_slideshow.dart';
 import 'package:cinemapedia/presentation/screens/widgets/shared/custom_appbar.dart';
+import 'package:cinemapedia/presentation/screens/widgets/shared/custom_bottom_navigation.dart';
 import 'package:cinemapedia/presentation/screens/widgets/shared/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +16,7 @@ class HomeScreen extends StatelessWidget {
     return const Scaffold(
       drawer: SideBar(),
       body: _HomeView(),
+      bottomNavigationBar: CustomButtonNavigation(),
     );
   }
 }
@@ -40,35 +43,17 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    // final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final nowPlayingRecentMovies = ref.watch(moviesSlideshowProvider);
 
-    if (nowPlayingMovies.isEmpty) {
+    if (nowPlayingRecentMovies.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
     return Column(
       children: [
-        CustomAppBar(),
-        Expanded(
-          child: ListView.builder(
-            itemCount: nowPlayingMovies.length,
-            itemBuilder: ((context, index) {
-              final movie = nowPlayingMovies[index];
-
-              return ListTile(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Image.network(movie.posterPath);
-                      });
-                },
-                trailing: Image.network(movie.posterPath),
-                title: Text(movie.title),
-              );
-            }),
-          ),
-        )
+        const CustomAppBar(),
+        MoviesSlideshow(movies: nowPlayingRecentMovies),
       ],
     );
   }
