@@ -1,10 +1,8 @@
 import 'package:cinemapedia/presentation/providers/providers.dart';
-import 'package:cinemapedia/presentation/screens/widgets/movies/movies_slideshow.dart';
-import 'package:cinemapedia/presentation/screens/widgets/shared/custom_appbar.dart';
-import 'package:cinemapedia/presentation/screens/widgets/shared/custom_bottom_navigation.dart';
-import 'package:cinemapedia/presentation/screens/widgets/shared/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   static const name = 'home-screen';
@@ -54,6 +52,10 @@ class _HomeViewState extends ConsumerState<_HomeView> {
       children: [
         const CustomAppBar(),
         MoviesSlideshow(movies: nowPlayingRecentMovies),
+        MovieHorizontalListView(
+          title: 'En Cines',
+          movies: nowPlayingRecentMovies,
+        ),
       ],
     );
   }
