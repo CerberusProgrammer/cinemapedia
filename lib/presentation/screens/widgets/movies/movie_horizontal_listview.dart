@@ -2,8 +2,9 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:cinemapedia/domain/entities/movies.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class MovieHorizontalListView extends StatelessWidget {
+class MovieHorizontalListView extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
   final VoidCallback? loadNextPage;
@@ -16,21 +17,53 @@ class MovieHorizontalListView extends StatelessWidget {
   });
 
   @override
+  State<MovieHorizontalListView> createState() =>
+      _MovieHorizontalListViewState();
+}
+
+class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if (widget.loadNextPage == null) {
+        return;
+      }
+
+      if ((scrollController.position.pixels + 200) >=
+          scrollController.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
         height: 420,
         child: Column(
           children: [
-            if (title != null) _Title(title: title),
+            if (widget.title != null) _Title(title: widget.title),
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
+                  controller: scrollController,
                   scrollDirection: Axis.horizontal,
-                  itemCount: movies.length,
+                  itemCount: widget.movies.length,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: ((context, index) {
-                    return _Slide(movie: movies[index]);
+                    return FadeInRight(
+                        child: _Slide(movie: widget.movies[index]));
                   })),
             )),
           ],
@@ -66,7 +99,12 @@ class _Slide extends StatelessWidget {
                     ),
                   );
                 }
-                return FadeIn(child: child);
+                return GestureDetector(
+                  onTap: () {
+                    context.push('/movie/${movie.id}');
+                  },
+                  child: FadeIn(child: child),
+                );
               },
             ),
           ),
