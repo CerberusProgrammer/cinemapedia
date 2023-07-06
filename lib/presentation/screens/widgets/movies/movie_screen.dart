@@ -1,6 +1,8 @@
+import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MovieScreen extends StatefulWidget {
+class MovieScreen extends ConsumerStatefulWidget {
   static const appRouterName = "movie-screen";
 
   final String movieID;
@@ -11,16 +13,34 @@ class MovieScreen extends StatefulWidget {
   });
 
   @override
-  State<MovieScreen> createState() => _MovieScreenState();
+  MovieScreenState createState() => MovieScreenState();
 }
 
-class _MovieScreenState extends State<MovieScreen> {
+class MovieScreenState extends ConsumerState<MovieScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(movieInfoProvider.notifier).loadMovie(widget.movieID);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final movie = ref.watch(movieInfoProvider)[widget.movieID];
+
+    if (movie == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('movieid: ${widget.movieID}'),
       ),
+      body: Center(child: Text(movie!.title)),
     );
   }
 }

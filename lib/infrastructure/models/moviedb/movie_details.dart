@@ -12,7 +12,6 @@ class MovieDetails {
   final String overview;
   final double popularity;
   final String posterPath;
-  final List<ProductionCompany> productionCompanies;
   final List<ProductionCountry> productionCountries;
   final DateTime releaseDate;
   final int revenue;
@@ -39,7 +38,6 @@ class MovieDetails {
     required this.overview,
     required this.popularity,
     required this.posterPath,
-    required this.productionCompanies,
     required this.productionCountries,
     required this.releaseDate,
     required this.revenue,
@@ -71,9 +69,6 @@ class MovieDetails {
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"],
-        productionCompanies: List<ProductionCompany>.from(
-            json["production_companies"]
-                .map((x) => ProductionCompany.fromJson(x))),
         productionCountries: List<ProductionCountry>.from(
             json["production_countries"]
                 .map((x) => ProductionCountry.fromJson(x))),
@@ -104,8 +99,6 @@ class MovieDetails {
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
-        "production_companies":
-            List<dynamic>.from(productionCompanies.map((x) => x.toJson())),
         "production_countries":
             List<dynamic>.from(productionCountries.map((x) => x.toJson())),
         "release_date":
